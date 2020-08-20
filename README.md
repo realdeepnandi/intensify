@@ -11,4 +11,8 @@ A simple Spotify Web API based app
 ### Screenshots
 <img src="https://github.com/realdeepnandi/intensify/blob/master/assets/images/mobile-1.png" width="480px">
 
+<img src="https://github.com/realdeepnandi/intensify/blob/master/assets/images/dsktop-1.png" width="480px">
+
+<img src="https://github.com/realdeepnandi/intensify/blob/master/assets/images/desktop-2.png" width="480px">
+
 [Intensify](https://intensify.herokuapp.com/)
