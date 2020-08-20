@@ -8,4 +8,7 @@ A simple Spotify Web API based app
 + Saved tracks sorted popularity wise
 + More features to be added
 
+### Screenshots
+![alt text](https://github.com/realdeepnandi/intensify/blob/master/assets/images/mobile-1.png "Mobie Page")
+
 [Intensify](https://intensify.herokuapp.com/)
