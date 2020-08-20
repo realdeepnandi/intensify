@@ -9,6 +9,6 @@ A simple Spotify Web API based app
 + More features to be added
 
 ### Screenshots
-![alt text](https://github.com/realdeepnandi/intensify/blob/master/assets/images/mobile-1.png "Mobie Page")
+<img src="https://github.com/realdeepnandi/intensify/blob/master/assets/images/mobile-1.png" width="480px">
 
 [Intensify](https://intensify.herokuapp.com/)
