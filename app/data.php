@@ -61,6 +61,8 @@ if ($current_flag == 1 && $device_flag == 1) {
     $data .= " Currently listening to <br><a target=\"_blank\" href=" . $current_song_url . " class=\"alert-link\">" . $current_song . "</a> by <a target=\"_blank\" href=\"" . $current_artist_url . "\" class=\"alert-link\">" . $current_song_artist . "</a>";
     $data .= "<br>";
     $data .= $device_name . " ($device_type)";
+} else {
+    $data = 'Nothing is being played';
 }
 
 echo $data;

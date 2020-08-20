@@ -5,9 +5,9 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
     $accessToken = $_SESSION['accessToken'];
     $refreshToken = $_SESSION['refreshToken'];
     $session = new SpotifyWebAPI\Session(
-        'client id',
-        'Secrect id',
-        'Redirect url'
+        'client_id',
+        'secret_id',
+        'redirect'
     );
     if ($accessToken) {
         $session->setAccessToken($accessToken);
@@ -71,7 +71,7 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
     <nav class="navbar navbar-light justify-content-center " style="background:#000;font-family:Gotham;">
         <div class="text-center">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#" style="color:white;font-size:25px">Intensify - Beta</a>
+                <a class="navbar-brand" href="#" style="color:white;font-size:25px">Intensify - Alpha</a>
             </div>
         </div>
     </nav>
@@ -90,7 +90,15 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
             </ul>
             <br>
             <div class="card " style="width: 80%;"><br>
-                <center><img style="width:170px;border-radius:50%;" src="<?php echo $me_image; ?>" class="card-img-top" alt="Profile Picture" /></center>
+                <center>
+                    <?php if (isset($me_image)) { ?>
+                        <img style="width:170px;border-radius:50%;" src="<?php echo $me_image; ?>" class="card-img-top" alt="Profile Picture" />
+                    <?php } else {
+                    ?>
+                        <img style="width:170px;border-radius:50%;" src="https://www.freepnglogos.com/uploads/spotify-logo-png/spotify-icon-marilyn-scott-0.png" class="card-img-top" alt="Profile Picture" />
+                    <?php
+                    } ?>
+                </center>
                 <div class="card-body">
                     <p class="card-text" style="font-family:Gotham;font-size:15px;">
                         <?php echo "<font size=5>" . $me->display_name . "</font>"; ?>
