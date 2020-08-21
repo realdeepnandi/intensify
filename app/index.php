@@ -25,11 +25,15 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
     // print_r($currentTrack->item->album->artists[0]->external_urls->spotify);
 
 
-
-
+    // print_r(gmdate("H:i:s", $api->getMyCurrentPlaybackInfo()->progress_ms / 1000));
 
 
     $me = $api->me();
+    $user_id = $me->id;
+    $playlists = $api->getUserPlaylists($user_id);
+
+
+
     $me_image = $me->images[0]->url;
     // print_r($me->images[0]->url);
     $tracks = $api->getMySavedTracks();
@@ -58,8 +62,8 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
     </style>
 
 
-    <link rel="stylesheet" href="/assets/css/mdb.min.css">
-    <script src="/assets/js/mdb.min.js"></script>
+    <link rel="stylesheet" href="/intensify/assets/css/mdb.min.css">
+    <script src="/intensify/assets/js/mdb.min.js"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,7 +75,7 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
     <nav class="navbar navbar-light justify-content-center " style="background:#000;font-family:Gotham;">
         <div class="text-center">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#" style="color:white;font-size:25px">Intensify - Alpha</a>
+                <a class="navbar-brand" href="#" style="color:white;font-size:25px">Intensify</a>
             </div>
         </div>
     </nav>
@@ -89,16 +93,8 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
                 </li>
             </ul>
             <br>
-            <div class="card " style="width: 80%;"><br>
-                <center>
-                    <?php if (isset($me_image)) { ?>
-                        <img style="width:170px;border-radius:50%;" src="<?php echo $me_image; ?>" class="card-img-top" alt="Profile Picture" />
-                    <?php } else {
-                    ?>
-                        <img style="width:170px;border-radius:50%;" src="https://www.freepnglogos.com/uploads/spotify-logo-png/spotify-icon-marilyn-scott-0.png" class="card-img-top" alt="Profile Picture" />
-                    <?php
-                    } ?>
-                </center>
+            <div class="card " style="width: 25rem;"><br>
+                <center><img style="width:170px;border-radius:50%;" src="<?php echo $me_image; ?>" class="card-img-top" alt="Profile Picture" /></center>
                 <div class="card-body">
                     <p class="card-text" style="font-family:Gotham;font-size:15px;">
                         <?php echo "<font size=5>" . $me->display_name . "</font>"; ?>
@@ -111,8 +107,15 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
 
             <div class="tab-content" id="ex2-content">
 
+                <br>
                 <div class="tab-pane fade show active" id="ex2-tabs-1" role="tabpanel" aria-labelledby="ex2-tab-1">
-                    <h6 style="font-family:Gotham;font-size:15px;">Your last 50 saved tracks sorted popularity wise</h6>
+                    <?php
+                    $save_songs_count = 0;
+                    foreach ($tracks->items as $track) {
+                        $save_songs_count++;
+                    }
+                    ?>
+                    <h6 style="font-family:Gotham;font-size:15px;">Your last <?php echo $save_songs_count; ?> saved tracks sorted popularity wise</h6>
                     <br>
                     <div class="row row-cols-1 row-cols-md-4 g-4">
 
@@ -155,10 +158,47 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
                     </div>
                 </div>
                 <div class="tab-pane fade" id="ex2-tabs-2" role="tabpanel" aria-labelledby="ex2-tab-2">
-                    To be Added
+                    <?php
+                    $playlist_count = 0;
+                    foreach ($playlists->items as $playlist) {
+                        $playlist_count++;
+                    }
+                    ?>
+                    <h6 style="font-family:Gotham;font-size:15px;">Your last <?php echo $playlist_count; ?> saved playlists </h6>
+                    <br>
+
+                    <div class="row row-cols-1 row-cols-md-4 g-4">
+                        <?php
+                        $arr_playlist = array();
+                        foreach ($playlists->items as $playlist) {
+                            $playlist_url = $playlist->external_urls->spotify;
+                            $name = $playlist->name;
+                            $image = $playlist->images[0]->url;
+                            $arr = array("name" => $name, "url" => $playlist_url, "image" => $image);
+                            array_push($arr_playlist, $arr);
+                        }
+                        foreach ($arr_playlist as  $value) {
+                        ?>
+                            <div class="col">
+                                <div class="card text-white bg-dark h-100" style='width:80%;'>
+                                    <?php echo "<img  src='" . $value['image'] . "' class='card-img-top'>"; ?>
+
+                                    <div class="card-body ">
+                                        <h6 class="card-title " style="font-family:Gotham;font-size:15px;"><?php echo $value['name']; ?></h6>
+                                        <p class="card-text">
+
+                                            <!-- <?php echo $value['artist_name']; ?> -->
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="ex2-tabs-3" role="tabpanel" aria-labelledby="ex2-tab-3">
-                    To be Added
+                    Tab 3 content
                 </div>
             </div>
 
@@ -168,18 +208,13 @@ if (isset($_SESSION['accessToken']) && isset($_SESSION['refreshToken'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            setInterval(fetchSong, 500);
+            setInterval(fetchSong, 1000);
             let x = 0;
 
             function fetchSong() {
                 $.ajax({
                     url: "data.php",
-                    beforeSend: function() {
-                        if (x == 0) {
-                            $("#data").html("Loading...");
-                            x++;
-                        }
-                    },
+
                     success: function(result) {
                         $("#data").html(result);
                     }
