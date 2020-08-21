@@ -5,7 +5,7 @@ A simple Spotify Web API based app
 
 ### Current features
 + Live playback status with device name and seek time
-+ Saved tracks and playlists sorted popularity wise
++ Saved tracks and playlists 
 + More features to be added
 
 ### Screenshots
